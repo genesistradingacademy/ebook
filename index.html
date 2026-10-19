@@ -1,533 +1,426 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Estratégia Wolverine — Página de Vendas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#062b24;
-      --bg-2:#0a3a31;
-      --card:#103d33;
-      --muted:#a7ff83;
-      --muted-2:#d7ffc7;
-      --text:#e8fff3;
-      --text-dim:#bfe9d2;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --border:1px solid rgba(255,255,255,.08);
-      --radius:16px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica,Arial,sans-serif;
-      color:var(--text);
-      background: radial-gradient(1200px 600px at 50% -10%, #0f4a3e 0%, var(--bg) 45%, #04221d 100%);
-      overflow-x:hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ebook Wolverine | Gênesis Trading</title>
+<meta name="description" content="Ebook Wolverine: VWAP, DI Ponderado e regras do operacional no mini dólar, com os dois indicadores. Conteúdo educacional.">
+<link rel="icon" href="logo-gt.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 
-    /* ===== BACKGROUND GRID / LINES ===== */
-    .bg-grid::before,
-    .bg-grid::after{
-      content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.25;
-      background-image:
-        linear-gradient(transparent 96%, rgba(167,255,131,.18) 98%),
-        linear-gradient(90deg, transparent 96%, rgba(167,255,131,.18) 98%);
-      background-size: 60px 60px, 60px 60px;
-      background-position:center center;
-      mix-blend-mode:screen;
-    }
-    .bg-grid::after{
-      z-index:-1;opacity:.35;filter: blur(0.5px);
-      background-image:
-        repeating-linear-gradient(90deg, rgba(167,255,131,.06) 0 2px, transparent 2px 120px),
-        repeating-linear-gradient(0deg, rgba(167,255,131,.06) 0 2px, transparent 2px 120px);
-      animation: moveLines 18s linear infinite;
-    }
-    @keyframes moveLines{to{background-position: 120px 0, 0 120px}}
+<!-- Meta Pixel (dataset Genesis Trading). ID público, não é segredo. -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1106800788746382');
+fbq('track','PageView');
+fbq('track','ViewContent',{content_name:'Ebook Wolverine',currency:'BRL',value:39.90});
+</script>
 
-    /* ===== HEADER ===== */
-    header{
-      position:sticky;top:0;z-index:20;
-      display:flex;align-items:center;justify-content:space-between;
-      padding:16px 28px;background:rgba(0,0,0,.35);backdrop-filter: blur(8px);
-      border-bottom:var(--border);
-    }
-    .brand{font-weight:800;letter-spacing:.12em;color:var(--muted)}
-    .btn{
-      appearance:none;border:0;border-radius:999px;padding:12px 18px;font-weight:700;cursor:pointer;
-      background: linear-gradient(180deg, var(--muted) 0%, #79ff5a 100%);
-      color:#062b24;box-shadow:0 8px 20px rgba(167,255,131,.25);
-      text-decoration:none;display:inline-flex;align-items:center;gap:8px;
-    }
-    .btn:hover{transform:translateY(-1px)}
-
-    /* ===== HERO ===== */
-    .hero{padding:74px 18px 28px;text-align:center;position:relative}
-    .hero h1{font-size:44px;line-height:1.05;margin:8px 0 10px;color:var(--muted);text-shadow:0 2px 0 rgba(0,0,0,.2)}
-    .hero .sub{opacity:.9;max-width:880px;margin:0 auto 14px}
-    .hero .pill{
-      margin:20px auto 22px;max-width:900px;padding:14px 18px;border-radius:14px;
-      background: rgba(8,48,40,.6); border:var(--border); box-shadow: var(--shadow);
-    }
-    .hero ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 18px;list-style:none;padding:0;margin:10px auto 0;max-width:900px}
-    .hero li{opacity:.95}
-
-    /* ===== OFFER CARD ===== */
-    .offer-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;margin:20px auto 18px}
-    .offer-card{
-      background:linear-gradient(180deg, #b8ffc0 0%, #a7ff83 100%);
-      color:#0b2f25;max-width:380px;border-radius:18px;padding:18px 20px;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,.35)
-    }
-    .price-old{color:#1a4f3f;text-decoration:line-through;font-weight:600;opacity:.7}
-    .price-now{font-size:34px;font-weight:800;margin:6px 0 8px}
-    .what-include{font-size:14px;opacity:.9;text-align:left;margin:10px auto 16px;max-width:290px}
-    .what-include li{margin:6px 0}
-    .timer-shell{width:min(740px,95%);padding:10px;border-radius:12px;background:rgba(8,48,40,.6);border:var(--border);text-align:center}
-    .timer{font-weight:800;letter-spacing:.08em}
-    .cta{margin-top:12px}
-
-    /* ===== WHY SECTION ===== */
-    .sec{padding:54px 18px}
-    .title{font-size:22px;text-align:center;margin:0 auto 26px;max-width:900px}
-    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1000px;margin:0 auto}
-    .card{background: rgba(9,54,44,.6);border:var(--border);padding:18px;border-radius:14px;box-shadow:var(--shadow)}
-    .card h4{margin:6px 0 8px;color:var(--muted)}
-    .card p{margin:0;opacity:.9}
-    .icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(167,255,131,.18);border:1px solid rgba(167,255,131,.35)}
-
-    /* ===== LEARN SECTION ===== */
-    .learn{display:grid;grid-template-columns:1.3fr .9fr;gap:26px;max-width:1050px;margin:0 auto}
-    .checklist{background:rgba(9,54,44,.6);border:var(--border);border-radius:16px;padding:18px 20px}
-    .checklist li{margin:10px 0;display:flex;gap:10px}
-    .chk{flex:0 0 20px;height:20px;border-radius:999px;background:linear-gradient(180deg,#a7ff83,#79ff5a);display:inline-block}
-
-    .phone{
-      position:relative;justify-self:center;align-self:start;width:270px;height:520px;border-radius:34px;padding:18px;background:linear-gradient(180deg,#0d2c25,#081f19);border:2px solid #0f4b3e;box-shadow:0 25px 70px rgba(0,0,0,.55)
-    }
-    .phone:before{content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);width:100px;height:5px;border-radius:99px;background:#0f4b3e}
-    .screen{position:absolute;inset:56px 14px 14px;border-radius:24px;background:#0a251f;border:1px solid rgba(167,255,131,.18);display:grid;place-items:center}
-    .screen h5{margin:0 0 8px;color:var(--muted)}
-    .dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
-    .dots span{width:6px;height:6px;border-radius:50%;background:#2e6b57}
-    .dots span.active{background:#a7ff83}
-    .nav-b{position:absolute;top:50%;width:34px;height:34px;border-radius:50%;border:1px solid rgba(167,255,131,.35);display:grid;place-items:center}
-    .nav-b.left{left:-18px}.nav-b.right{right:-18px}
-
-    /* ===== TESTIMONIALS ===== */
-    .t-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;max-width:1050px;margin:0 auto}
-    .t-card{background:rgba(9,54,44,.6);border:var(--border);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
-    .stars{color:#ffe26b;font-size:18px;letter-spacing:2px}
-    .student{opacity:.85;margin-top:8px;font-size:14px}
-
-    /* ===== FLOAT NOTIFICATION ===== */
-    .float-note{
-      position:fixed;left:18px;bottom:18px;z-index:30;background:rgba(9,54,44,.95);border:var(--border);border-left:4px solid var(--muted);padding:12px 16px;border-radius:12px;box-shadow:0 15px 35px rgba(0,0,0,.4);
-      display:flex;gap:12px;align-items:center;max-width:320px;
-      transform:translateX(-100%);opacity:0;
-      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      backdrop-filter: blur(8px);
-    }
-    .float-note.show{
-      transform:translateX(0);opacity:1;
-    }
-    .float-ava{
-      width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#a7ff83,#79ff5a);
-      display:flex;align-items:center;justify-content:center;color:#062b24;font-weight:700;font-size:14px;
-      box-shadow:0 4px 8px rgba(167,255,131,.25);
-    }
-    .notification-content{flex:1}
-    .notification-name{font-weight:700;color:var(--muted)}
-    .notification-action{font-weight:600;margin:2px 0}
-    .notification-time{opacity:.8;font-size:12px;color:var(--text-dim)}
-    .notification-quote{font-size:12px;font-style:italic;opacity:.9;margin-top:4px;color:var(--muted-2)}
-
-    footer{text-align:center;padding:28px 18px;border-top:var(--border);opacity:.9}
-
-    /* ===== FINAL CTA ===== */
-    .final{padding:56px 18px 80px;background: radial-gradient(1200px 600px at 50% 10%, #0d3c33, #062b24 55%) }
-    .price-box{background:linear-gradient(180deg,#b8ffc0,#a7ff83);color:#083126;padding:20px;border-radius:18px;max-width:360px;margin:14px auto;text-align:center;box-shadow:var(--shadow)}
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width:960px){
-      .hero ul{grid-template-columns:1fr}
-      .cards{grid-template-columns:1fr 1fr}
-      .learn{grid-template-columns:1fr}
-      .t-grid{grid-template-columns:1fr}
-      .phone{margin-top:12px}
-      .float-note{left:12px;bottom:12px;max-width:280px}
-    }
-  
-.carousel {
-  position: relative;
-  width: 100%;
-  height: 100%;
+<style>
+:root{
+  --bg:#07120D; --card:#0E1D16; --card2:#122619;
+  --acc:#9BE65A; --acc-d:#6fb83a;
+  --txt:#F5F7FA; --dim:#9FB3A8;
+  --line:rgba(155,230,90,.18);
+  --r:18px;
 }
-.carousel img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-.carousel img.active {
-  opacity: 1;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 
+/* fundo: grade que desliza devagar */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(155,230,90,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(155,230,90,.06) 1px,transparent 1px);
+  background-size:64px 64px;animation:grid 24s linear infinite;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 0%,#000 20%,transparent 75%)}
+@keyframes grid{to{background-position:64px 64px,64px 64px}}
+
+/* topo */
+header{position:sticky;top:0;z-index:30;background:rgba(7,18,13,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.04em;font-size:15px}
+.brand img{width:30px;height:30px}
+
+/* botão */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;overflow:hidden;
+  background:var(--acc);color:#07120D;font-weight:800;font-size:16px;text-decoration:none;
+  padding:15px 28px;border-radius:999px;box-shadow:0 10px 30px rgba(155,230,90,.28);transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite}
+@keyframes shine{0%,55%{left:-60%}100%{left:130%}}
+.btn.sm{padding:10px 18px;font-size:14px}
+.btn.big{font-size:18px;padding:18px 34px}
+
+/* hero */
+.hero{padding:56px 0 30px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center}
+.tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);
+  border:1px solid var(--line);padding:6px 12px;border-radius:999px;background:rgba(155,230,90,.06);margin-bottom:18px}
+h1{font-size:clamp(34px,5.4vw,58px);line-height:1.04;font-weight:900;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--acc)}
+.lead{color:var(--dim);font-size:18px;margin:18px 0 26px;max-width:520px}
+.lead b{color:var(--txt)}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.price-inline{font-size:14px;color:var(--dim)}
+.price-inline s{opacity:.7}
+.price-inline strong{display:block;font-size:30px;color:var(--txt);font-weight:900;line-height:1.1}
+.mini-ticks{display:flex;gap:18px;margin-top:22px;flex-wrap:wrap;font-size:13px;color:var(--dim)}
+.mini-ticks span::before{content:"✓";color:var(--acc);font-weight:900;margin-right:6px}
+
+/* gráfico animado */
+.chart{background:linear-gradient(180deg,#0f2218,#0a1610);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.chart-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--dim);padding:2px 4px 8px}
+.chart-top b{color:var(--txt);font-weight:600}
+.live{display:inline-flex;align-items:center;gap:6px}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(155,230,90,.6)}100%{box-shadow:0 0 0 10px rgba(155,230,90,0)}}
+svg.c{width:100%;height:auto;display:block}
+.p{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.d{stroke-dasharray:1;stroke-dashoffset:1}
+.in .d{animation:draw 2.4s ease forwards}
+.in .d.l1{animation-delay:.1s}.in .d.l2{animation-delay:.5s}.in .d.l3{animation-delay:.9s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.price{stroke:#F5F7FA;stroke-width:2.4}
+.vwap{stroke:var(--acc);stroke-width:2.4}
+.band{stroke:#ffd75a;stroke-width:1.4;stroke-dasharray:5 5}
+.pop{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.4)}
+.in .pop{animation:pop .5s cubic-bezier(.3,1.6,.5,1) forwards}
+.in .pop.a{animation-delay:2.4s}.in .pop.b{animation-delay:3.1s}
+@keyframes pop{to{opacity:1;transform:scale(1)}}
+.ring{fill:none;stroke:var(--acc);stroke-width:2;transform-box:fill-box;transform-origin:center;opacity:0}
+.in .ring{animation:ring 2s ease-out 2.6s infinite}
+@keyframes ring{0%{opacity:.9;transform:scale(.6)}100%{opacity:0;transform:scale(2.6)}}
+.cap{font-size:11px;color:var(--dim);text-align:center;padding:8px 6px 2px}
+
+/* faixa rolando */
+.marq{border-block:1px solid var(--line);background:rgba(14,29,22,.7);overflow:hidden;margin:26px 0 0;white-space:nowrap}
+.marq div{display:inline-block;padding:14px 0;animation:marq 28s linear infinite;font-weight:800;letter-spacing:.08em;font-size:13px;color:var(--acc);text-transform:uppercase}
+.marq span{margin:0 26px}.marq span::after{content:"◆";margin-left:52px;opacity:.5}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* seções */
+section{padding:70px 0}
+h2{font-size:clamp(26px,4vw,38px);font-weight:900;letter-spacing:-.01em;line-height:1.1;margin-bottom:12px}
+h2 em{font-style:normal;color:var(--acc)}
+.sub{color:var(--dim);max-width:640px;margin-bottom:34px}
+
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+
+/* 2 indicadores */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;transition:transform .25s,border-color .25s}
+.box:hover{transform:translateY(-4px);border-color:rgba(155,230,90,.5)}
+.box .n{width:42px;height:42px;border-radius:12px;background:rgba(155,230,90,.12);border:1px solid var(--line);display:grid;place-items:center;color:var(--acc);font-weight:900;margin-bottom:14px}
+.box h3{font-size:20px;margin-bottom:8px}
+.box p{color:var(--dim);font-size:15px}
+
+/* módulos */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mod{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 18px 56px;position:relative;font-weight:600;font-size:15px;transition:background .25s}
+.mod:hover{background:var(--card2)}
+.mod::before{content:"";position:absolute;left:18px;top:19px;width:24px;height:24px;border-radius:50%;background:var(--acc)}
+.mod::after{content:"";position:absolute;left:26px;top:24px;width:6px;height:11px;border:solid #07120D;border-width:0 3px 3px 0;transform:rotate(45deg)}
+.mod small{display:block;color:var(--dim);font-weight:400;font-size:13px;margin-top:2px}
+
+/* galeria no celular */
+.gal{display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:center}
+.phone{position:relative;width:300px;max-width:100%;aspect-ratio:9/16;margin:0 auto;border-radius:36px;padding:12px;background:#0b1a12;border:2px solid #1c3a28;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.phone .scr{position:relative;width:100%;height:100%;border-radius:26px;overflow:hidden;background:#000}
+.phone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .6s,transform 1.2s}
+.phone img.on{opacity:1;transform:scale(1)}
+.dots{display:flex;gap:7px;justify-content:center;margin-top:16px}
+.dots button{width:9px;height:9px;border-radius:50%;border:0;background:#2b4a38;cursor:pointer;transition:.25s}
+.dots button.on{background:var(--acc);width:26px;border-radius:9px}
+.arrows{display:flex;gap:10px;justify-content:center;margin-top:12px}
+.arrows button{background:var(--card);border:1px solid var(--line);color:var(--txt);width:42px;height:42px;border-radius:50%;font-size:18px;cursor:pointer}
+.gal ul{list-style:none;display:grid;gap:14px}
+.gal li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--dim);font-size:15px}
+.gal li b{color:var(--txt);display:block}
+.disc{font-size:12px;color:var(--dim);margin-top:16px}
+
+/* depoimentos */
+.t3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.t{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.stars{color:#ffd75a;letter-spacing:3px;margin-bottom:10px}
+.t p{font-size:15px}
+.t .who{margin-top:14px;font-size:13px;color:var(--dim)}
+
+/* oferta */
+.offer{background:linear-gradient(180deg,#122a1a,#0c1a12);border:1px solid rgba(155,230,90,.4);border-radius:24px;padding:36px;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center;box-shadow:0 0 0 1px rgba(155,230,90,.08),0 30px 80px rgba(0,0,0,.5)}
+.offer ul{list-style:none;display:grid;gap:10px}
+.offer li::before{content:"✓";color:var(--acc);font-weight:900;margin-right:10px}
+.buy{text-align:center}
+.buy s{color:var(--dim)}
+.buy .v{font-size:54px;font-weight:900;line-height:1;margin:6px 0 4px}
+.buy .v small{font-size:22px}
+.buy .pay{font-size:13px;color:var(--dim);margin:6px 0 18px}
+.garant{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:22px;color:var(--dim);font-size:14px}
+
+/* faq */
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}
+summary{cursor:pointer;list-style:none;padding:18px 54px 18px 20px;font-weight:600;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:24px;color:var(--acc);transition:transform .25s}
+details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+details p{padding:0 20px 18px;color:var(--dim);font-size:15px}
+
+footer{border-top:1px solid var(--line);padding:34px 0 120px;color:var(--dim);font-size:12px;text-align:center}
+footer p{max-width:760px;margin:0 auto 8px}
+
+/* barra fixa no celular */
+.sticky{display:none}
+@media(max-width:860px){
+  .hero .wrap,.gal,.offer{grid-template-columns:1fr}
+  .two,.t3{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr 1fr}
+  .offer{padding:26px}
+  section{padding:52px 0}
+  .sticky{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;
+    background:rgba(7,18,13,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .35s}
+  .sticky.on{transform:none}
+  .sticky .pr{font-size:12px;color:var(--dim);line-height:1.2}
+  .sticky .pr b{display:block;font-size:20px;color:var(--txt)}
+}
+@media(max-width:520px){.grid3{grid-template-columns:1fr}}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .d{stroke-dashoffset:0}.pop,.rv{opacity:1;transform:none}
+}
 </style>
 </head>
-<body class="bg-grid">
-  <!-- ===== HEADER ===== -->
-  <header>
-    <div class="brand">Genesis Trading</div>
-    <a class="btn" href="https://lastlink.com/p/CC77DFE11/">ADQUIRIR AGORA</a>
-  </header>
+<body>
 
-  <!-- ===== HERO ===== -->
-  <section class="hero">
-    <h1>Estratégia Wolverine</h1>
-    <p class="sub">"A Estratégia dos Traders Profissionais para Amassar o Mini Dólar Todos os Dias"</p>
+<header>
+  <div class="wrap">
+    <div class="brand"><img src="logo-gt.svg" alt="" width="30" height="30">GÊNESIS TRADING</div>
+    <a class="btn sm" href="https://lastlink.com/p/CC77DFE11/" data-buy>Quero o ebook</a>
+  </div>
+</header>
 
-    <div class="pill">Oferta Exclusiva: Aprenda a Estratégia que entrega no mínimo 10 pontos por dia no Dólar Futuro.</div>
-
-    <ul>
-      <li>✅ Sabendo onde os institucionais estão defendendo preço</li>
-      <li>✅ Identificando distorçôes reais de valor com a VWAP</li>
-      <li>✅ Usando o fluxo dos DIs para antecipar movimentos com precisão</li>
-    </ul>
-	
-	<p class="sub">"Quer consistência no Mini Dólar? Comece com uma estratégia que entrega resultado."</p>
-
-    <p style="margin:18px 0 0;opacity:.9">Garanta seu acesso agora</p>
-
-    <div id="oferta" class="offer-wrap">
-      <div class="offer-card">
-        <div class="price-old">De R$ 97,90</div>
-        <div class="price-now">por R$ 39,90</div>
-        <div style="font-weight:700;margin:10px 0 6px">O que está incluso:</div>
-        <ul class="what-include">
-          <li>✔ E-book Wolverine</li>
-          <li>✔ Indicador Wolverine</li>
-          <li>✔ Fundamento da VWAP</li>
-          <li>✔ Indicador DI Ponderado</li>
-          <li>✔ O que são os Dis?</li>
-          <li>✔ Gestão de Risco</li>
-          <li>✔ Regras do Operacionais</li>
-          <li>✔ Exemplos de Trades</li>
-        </ul>
-        <a href="#" class="btn">ADQUIRIR O E-BOOK AGORA</a>
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <span class="tag">Mini dólar · VWAP · DI</span>
+      <h1>Aprenda a ler o <em>valor justo</em> do mini dólar no dia</h1>
+      <p class="lead">O <b>Ebook Wolverine</b> ensina a VWAP, o fluxo dos DIs e as regras do operacional, com os <b>2 indicadores</b> que usamos: <b>Wolverine</b> e <b>DI Ponderado</b>.</p>
+      <div class="hero-cta">
+        <a class="btn big" href="https://lastlink.com/p/CC77DFE11/" data-buy>Quero o ebook</a>
+        <div class="price-inline"><s>De R$ 97,90</s><strong>R$ 39,90</strong></div>
       </div>
-
-      <div class="timer-shell">
-        Oferta especial termina em: <span id="timer" class="timer">--:--:--</span>
-      </div>
-      <div class="cta"><a href="https://lastlink.com/p/CC77DFE11/" class="btn">ADQUIRIR O E-BOOK AGORA</a></div>
+      <div class="mini-ticks"><span>Acesso imediato na Lastlink</span><span>Garantia de 7 dias</span></div>
     </div>
-  </section>
 
-  <!-- ===== WHY ===== -->
-  <section class="sec">
-    <h2 class="title">Por que escolher a Estratégia Wolverine?</h2>
-    <div class="cards">
-      <div class="card">
-        <div class="icon">💡</div>
-        <h4>Metodologia Comprovada</h4>
-        <p>Estratégia baseada em volatilidade e juros ponderado, base fundamentada, entregando consistência e resultados reais.</p>
-      </div>
-      <div class="card">
-        <div class="icon">🎯</div>
-        <h4>Regras Claras</h4>
-        <p>Condições explícitas de entrada com alvos e stops objetivos, permitindo operação com precisão.</p>
-      </div>
-      <div class="card">
-        <div class="icon">⚡</div>
-        <h4>Indicador Exclusivo</h4>
-        <p>DI Ponderados customizado que analisa a curva de juros futura para identificar oportunidades de arbitragem e Wolverine que analisa a volatilidade do Dólar Futuro.</p>
-      </div>
-      <div class="card">
-        <div class="icon">🛡️</div>
-        <h4>Gestão de Risco</h4>
-        <p>Plano de risco e dimensionamento de posição, com metas diárias e proteção de capital.</p>
-      </div>
-      <div class="card">
-        <div class="icon">📈</div>
-        <h4>Alta Liquidez</h4>
-        <p>Operando no mercado de dólar futuro, com liquidez elevada e diversas oportunidades diárias.</p>
-      </div>
-      <div class="card">
-        <div class="icon">🧪</div>
-        <h4>Exemplos Práticos</h4>
-        <p>Casos reais, prints e exemplos detalhados para aplicar o conhecimento desde o primeiro dia.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== WHAT YOU'LL LEARN ===== -->
-  <section class="sec">
-    <h2 class="title">O que você vai aprender:</h2>
-    <div class="learn">
-      <div class="checklist">
-        <ul style="list-style:none;padding:0;margin:0">
-          <li><span class="chk"></span>Fundamentos completos de volatilidade e sua importância</li>
-          <li><span class="chk"></span>Estrutura macroeconômica do dólar futuro</li>
-          <li><span class="chk"></span>Estratégia simples e objetiva (alvos e entradas)</li>
-          <li><span class="chk"></span>Análise de grandes players e fluxo</li>
-          <li><span class="chk"></span>Psicologia do preço e zonas-chave</li>
-          <li><span class="chk"></span>Identificar zonas de breakouts e falsos</li>
-          <li><span class="chk"></span>Leitura de book e tape reading</li>
-          <li><span class="chk"></span>Rastrear microtendências por ciclos</li>
-          <li><span class="chk"></span>Gestão profissional de risco e capital</li>
-        </ul>
-      </div>
-      
-<div class="phone">
-  <div class="nav-b left">‹</div>
-  <div class="nav-b right">›</div>
-  <div class="screen">
-    <div class="carousel">
-      <img src="1.png" alt="Slide 1" class="active">
-      <img src="2.png" alt="Slide 2">
-      <img src="3.png" alt="Slide 3">
-	  <img src="4.png" alt="Slide 4">
-	  <img src="5.png" alt="Slide 5">
-	  <img src="6.png" alt="Slide 6">
-	  <img src="7.png" alt="Slide 7">
-    </div>
-    <div class="dots">
-      <span class="active"></span>
-      <span></span>
-      <span></span>
+    <div class="chart rv" id="chart">
+      <div class="chart-top"><span class="live"><i></i><b>WDO</b> ilustração</span><span>preço × VWAP</span></div>
+      <svg class="c" viewBox="0 0 600 300" role="img" aria-label="Ilustração: preço se afasta da VWAP e volta">
+        <g stroke="rgba(155,230,90,.08)" stroke-width="1">
+          <line x1="0" y1="60" x2="600" y2="60"/><line x1="0" y1="120" x2="600" y2="120"/>
+          <line x1="0" y1="180" x2="600" y2="180"/><line x1="0" y1="240" x2="600" y2="240"/>
+        </g>
+        <path class="p band d l1" pathLength="1" d="M0,92 C200,106 400,106 600,98"/>
+        <path class="p band d l1" pathLength="1" d="M0,182 C200,196 400,196 600,190"/>
+        <path class="p vwap d l2" pathLength="1" d="M0,137 C200,151 400,151 600,144"/>
+        <path class="p price d l3" pathLength="1" d="M0,120 L30,108 L55,128 L80,148 L105,136 L130,172 L155,198 L180,226 L205,212 L232,252 L258,222 L284,204 L310,208 L336,176 L366,166 L396,152 L426,162 L456,134 L486,124 L520,128 L560,112 L600,118"/>
+        <circle class="ring" cx="232" cy="252" r="10"/>
+        <g class="pop a"><circle cx="232" cy="252" r="7" fill="#9BE65A"/><text x="246" y="272" fill="#9BE65A" font-size="14" font-weight="800" font-family="Inter">Preço longe da VWAP</text></g>
+        <g class="pop b"><path d="M330,170 L330,150" stroke="#9BE65A" stroke-width="2.4" fill="none" marker-end="url(#ar)"/><text x="344" y="140" fill="#9BE65A" font-size="14" font-weight="800" font-family="Inter">Volta para a média</text></g>
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#9BE65A"/></marker></defs>
+      </svg>
+      <div class="cap">Ilustração didática, não é um trade real nem promessa de resultado.</div>
     </div>
   </div>
+
+  <div class="marq"><div id="mq"></div></div>
 </div>
 
+<!-- 2 INDICADORES -->
+<section>
+  <div class="wrap">
+    <h2 class="rv">Dois indicadores, <em>uma leitura só</em></h2>
+    <p class="sub rv d1">O ebook explica cada um e mostra como usar os dois juntos no operacional.</p>
+    <div class="two">
+      <div class="box rv d1">
+        <div class="n">1</div>
+        <h3>Wolverine</h3>
+        <p>Mostra o desvio percentual do preço em relação à VWAP. Quando o preço se afasta do valor justo do dia, aparecem as zonas de excesso e de possível retorno à média.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- ===== TESTIMONIALS ===== -->
-  <section class="sec">
-    <h2 class="title">O que dizem nossos alunos</h2>
-    <div class="t-grid">
-      <div class="t-card">
-        <div class="stars">★★★★★</div>
-        <p>"A metodologia Wolverine mudou completamente minha forma de operar. Com estratégia clara e disciplina, fechei o mês no verde. 5 estrelas!"</p>
-        <div class="student">Carlos M. — Trader há 3 anos</div>
+      <div class="box rv d2">
+        <div class="n">2</div>
+        <h3>DI Ponderado</h3>
+        <p>Compara o movimento dos juros futuros (DIs) com o dólar. Quando os dois descolam, o spread mostra uma distorção que o ebook ensina a ler.</p>
       </div>
-      <div class="t-card">
-        <div class="stars">★★★★★</div>
-        <p>"Material direto ao ponto e muito bem explicado. O indicador de VWAP facilitou demais as confirmações."</p>
-        <div class="student">Ana Paula S. — Day Trader</div>
-      </div>
-      <div class="t-card">
-        <div class="stars">★★★★★</div>
-        <p>"Depois de anos perdendo dinheiro, encontrei uma estratégia objetiva. Resultados consistentes!"</p>
-        <div class="student">Roberto L. — Swing Trader</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== FINAL CTA ===== -->
-  <section class="final">
-    <h2 class="title" style="font-size:26px">Pronto para transformar seu trading?</h2>
-    <p class="title" style="opacity:.9;margin-top:-10px">Junte-se a centenas de alunos que já estão lucrando consistentemente com a Estratégia Wolverine.</p>
-    <div class="price-box">
-      <div class="price-old">De R$ 97,90</div>
-      <div class="price-now">por R$ 39,90</div>
-      <div style="font-weight:700;margin:10px 0 6px">O que está incluso:</div>
-      <ul class="what-include" style="margin:0 auto 10px">
-        <li>✔ E-book Wolverine</li>
-        <li>✔ Indicador Exclusivo</li>
-        <li>✔ Fundamentos de VWAP</li>
-        <li>✔ Exemplos de Trades</li>
-      </ul>
-      <a href="https://lastlink.com/p/CC77DFE11/" class="btn">QUERO COMEÇAR A LUCRAR AGORA</a>
-    </div>
-    <p style="text-align:center;opacity:.85">🛡️ Garantia de 7 dias — Se não gostar, devolvemos 100% do seu dinheiro.</p>
-  </section>
-
-  <footer>
-    © 2025 Estratégia Wolverine — Todos os direitos reservados.
-  </footer>
-
-  <!-- FLOATING NOTIFICATION -->
-  <div class="float-note" id="notification">
-    <div class="float-ava" id="userAvatar"></div>
-    <div class="notification-content">
-      <div><span class="notification-name" id="userName"></span>, <span class="notification-action" id="userAction"></span></div>
-      <div class="notification-time" id="userTime"></div>
-      <div class="notification-quote" id="userQuote"></div>
     </div>
   </div>
+</section>
 
-  <script>
-    // ===== Persistent 2-hour countdown using localStorage =====
-    (function(){
-      const KEY = 'wolv_timer_end_v1';
-      const TWO_HOURS = 2*60*60*1000;
-      let end = localStorage.getItem(KEY);
-      const now = Date.now();
-      if(!end || now > +end){
-        end = now + TWO_HOURS; localStorage.setItem(KEY, end);
-      }
-      const el = document.getElementById('timer');
-      const tick = () => {
-        const remain = +end - Date.now();
-        if(remain <= 0){
-          // reset on finish
-          end = Date.now() + TWO_HOURS; localStorage.setItem(KEY, end);
-        }
-        const s = Math.max(0, Math.floor((+end - Date.now())/1000));
-        const hh = String(Math.floor(s/3600)).padStart(2,'0');
-        const mm = String(Math.floor((s%3600)/60)).padStart(2,'0');
-        const ss = String(s%60).padStart(2,'0');
-        if(el) el.textContent = `${hh}:${mm}:${ss}`;
-      }
-      tick(); setInterval(tick, 1000);
-    })();
+<!-- O QUE VEM -->
+<section>
+  <div class="wrap">
+    <h2 class="rv">O que vem <em>no ebook</em></h2>
+    <p class="sub rv d1">Do fundamento ao operacional, em linguagem direta.</p>
+    <div class="grid3">
+      <div class="mod rv">Ebook Wolverine<small>passo a passo do método</small></div>
+      <div class="mod rv d1">Fundamentos da VWAP<small>o valor justo do dia</small></div>
+      <div class="mod rv d2">Indicador Wolverine<small>para o ProfitChart</small></div>
+      <div class="mod rv">O que são os DIs<small>e por que importam para o dólar</small></div>
+      <div class="mod rv d1">Indicador DI Ponderado<small>para o ProfitChart</small></div>
+      <div class="mod rv d2">Regras do operacional<small>entrada, alvo e stop</small></div>
+      <div class="mod rv">Gestão de risco<small>tamanho de posição e limite</small></div>
+      <div class="mod rv d1">Exemplos de trades<small>casos passados explicados</small></div>
+      <div class="mod rv d2">Acesso na Lastlink<small>ebook e indicadores na mesma área</small></div>
+    </div>
+  </div>
+</section>
 
-    // ===== Enhanced Float Notification with Multiple Users =====
-    (function(){
-      // Aguardar o DOM carregar completamente
-      function initNotifications() {
-        const notification = document.getElementById('notification');
-        const userName = document.getElementById('userName');
-        const userAction = document.getElementById('userAction');
-        const userTime = document.getElementById('userTime');
-        const userQuote = document.getElementById('userQuote');
-        const userAvatar = document.getElementById('userAvatar');
-        
-        // Verificar se todos os elementos existem
-        if (!notification || !userName || !userAction || !userTime || !userQuote || !userAvatar) {
-          console.warn('Elementos da notificação não encontrados');
-          return;
-        }
-        
-        const users = [
-          {
-            name: "Anderson",
-            action: "acabou de comprar o E-book Wolverine",
-            quote: "Vou usar essa estratégia no mini dólar!",
-            initial: "A",
-            timeAgo: "Há 1 min"
-          },
-          {
-            name: "Mariana",
-            action: "adquiriu a Estratégia Wolverine",
-            quote: "Finalmente algo que funciona de verdade!",
-            initial: "M",
-            timeAgo: "Há 3 min"
-          },
-          {
-            name: "Rafael",
-            action: "comprou o pacote completo",
-            quote: "Já estava perdendo muito, preciso de uma estratégia sólida",
-            initial: "R",
-            timeAgo: "Há 5 min"
-          },
-          {
-            name: "Juliana",
-            action: "garantiu seu acesso ao Wolverine",
-            quote: "Os exemplos práticos me convenceram!",
-            initial: "J",
-            timeAgo: "Há 7 min"
-          },
-          {
-            name: "Pedro",
-            action: "acabou de adquirir",
-            quote: "Preciso de consistência no meu trading",
-            initial: "P",
-            timeAgo: "Há 9 min"
-          },
-          {
-            name: "Luciana",
-            action: "comprou a Estratégia Wolverine",
-            quote: "O indicador DI Ponderado parece incrível!",
-            initial: "L",
-            timeAgo: "Há 12 min"
-          },
-          {
-            name: "Bruno",
-            action: "garantiu sua vaga",
-            quote: "Vou aplicar isso no dólar futuro hoje mesmo",
-            initial: "B",
-            timeAgo: "Há 15 min"
-          },
-          {
-            name: "Fernanda",
-            action: "adquiriu o e-book",
-            quote: "Cansei de perder dinheiro, hora de mudar!",
-            initial: "F",
-            timeAgo: "Há 18 min"
-          }
-        ];
-        
-        let currentIndex = 0;
-        
-        function showNotification() {
-          const user = users[currentIndex];
-          
-          userName.textContent = user.name;
-          userAction.textContent = user.action;
-          userTime.textContent = user.timeAgo;
-          userQuote.textContent = user.quote;
-          userAvatar.textContent = user.initial;
-          
-          notification.classList.add('show');
-          
-          // Hide after 4 seconds
-          setTimeout(() => {
-            if (notification) {
-              notification.classList.remove('show');
-            }
-          }, 4000);
-          
-          // Move to next user
-          currentIndex = (currentIndex + 1) % users.length;
-        }
-        
-        // Show first notification after 2 seconds
-        setTimeout(showNotification, 2000);
-        
-        // Then show new notifications every 8 seconds (4s visible + 4s hidden)
-        setInterval(showNotification, 8000);
-      }
-      
-      // Aguardar DOM carregar
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initNotifications);
-      } else {
-        initNotifications();
-      }
-    })();
-  
+<!-- GALERIA -->
+<section>
+  <div class="wrap">
+    <h2 class="rv">Veja um pouco <em>por dentro</em></h2>
+    <p class="sub rv d1">Páginas do material, com os indicadores aplicados ao gráfico.</p>
+    <div class="gal">
+      <div class="rv">
+        <div class="phone"><div class="scr" id="slides">
+          <img src="img/1.webp" alt="Os dois indicadores: DI Ponderado e Wolverine" class="on">
+          <img src="img/2.webp" alt="DI Ponderado explicado" loading="lazy">
+          <img src="img/3.webp" alt="Indicador Wolverine explicado" loading="lazy">
+          <img src="img/4.webp" alt="Exemplo de entrada com os dois indicadores" loading="lazy">
+          <img src="img/5.webp" alt="Exemplo de entrada com os dois indicadores" loading="lazy">
+          <img src="img/6.webp" alt="Exemplo de entrada com os dois indicadores" loading="lazy">
+          <img src="img/13.webp" alt="Exemplo com mais indicadores" loading="lazy">
+        </div></div>
+        <div class="dots" id="dots"></div>
+        <div class="arrows"><button id="prev" aria-label="Anterior">‹</button><button id="next" aria-label="Próximo">›</button></div>
+      </div>
+      <div class="rv d1">
+        <ul>
+          <li><b>Gráfico real, explicação curta</b>Cada página mostra o indicador no ProfitChart e o que observar.</li>
+          <li><b>Entrada, spread e retorno</b>Exemplos marcados no gráfico para você ver o raciocínio.</li>
+          <li><b>Feito para consultar</b>Dá para abrir antes do pregão e rever as regras.</li>
+        </ul>
+        <p class="disc">Exemplos de operações passadas, apenas para fins educacionais. Resultados passados não garantem resultados futuros.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section>
+  <div class="wrap">
+    <h2 class="rv">O que dizem <em>os alunos</em></h2>
+    <p class="sub rv d1">Relatos de alunos. Cada operador tem seu resultado, e eles variam.</p>
+    <div class="t3">
+      <div class="t rv"><div class="stars">★★★★★</div><p>"A metodologia Wolverine mudou completamente minha forma de operar. Com estratégia clara e disciplina, fechei o mês no verde."</p><div class="who">Carlos M., trader há 3 anos</div></div>
+      <div class="t rv d1"><div class="stars">★★★★★</div><p>"Material direto ao ponto e muito bem explicado. O indicador de VWAP facilitou demais as confirmações."</p><div class="who">Ana Paula S., day trader</div></div>
+      <div class="t rv d2"><div class="stars">★★★★★</div><p>"Depois de anos perdendo dinheiro, encontrei uma estratégia objetiva."</p><div class="who">Roberto L., swing trader</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- OFERTA -->
+<section id="oferta">
+  <div class="wrap">
+    <div class="offer rv">
+      <div>
+        <h2>Ebook Wolverine <em>+ 2 indicadores</em></h2>
+        <ul>
+          <li>Ebook Wolverine completo</li>
+          <li>Indicador Wolverine e indicador DI Ponderado</li>
+          <li>VWAP, DIs e gestão de risco</li>
+          <li>Regras do operacional e exemplos de trades</li>
+          <li>Acesso imediato pela Lastlink</li>
+        </ul>
+      </div>
+      <div class="buy">
+        <s>De R$ 97,90</s>
+        <div class="v"><small>R$</small> 39,90</div>
+        <div class="pay">pagamento único</div>
+        <a class="btn big" href="https://lastlink.com/p/CC77DFE11/" data-buy>Quero o ebook</a>
+        <div class="garant">🛡️ Garantia de 7 dias: não gostou, devolvemos 100%.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <h2 class="rv">Dúvidas <em>frequentes</em></h2>
+    <p class="sub"></p>
+    <details><summary>Serve para quem está começando?</summary><p>O ebook explica o fundamento (VWAP e DIs) antes das regras. É preciso já conhecer o básico de day trade e ter uma plataforma de gráfico.</p></details>
+    <details><summary>Como recebo o material?</summary><p>Após o pagamento você entra na área do aluno da Lastlink, onde ficam o ebook e os indicadores para baixar.</p></details>
+    <details><summary>Em qual plataforma os indicadores funcionam?</summary><p>Os indicadores são feitos para o ProfitChart.</p></details>
+    <details><summary>Qual o prazo de garantia?</summary><p>7 dias a partir da compra. Se não gostar, peça o reembolso pela Lastlink e devolvemos 100% do valor.</p></details>
+    <details><summary>O ebook garante lucro?</summary><p>Não. Day trade envolve risco de perda. O material é educacional e não é recomendação de investimento.</p></details>
+    <div style="text-align:center;margin-top:34px"><a class="btn big" href="https://lastlink.com/p/CC77DFE11/" data-buy>Quero o ebook por R$ 39,90</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>Aviso de risco:</b> day trade envolve risco de perda. Conteúdo educacional, não é recomendação de investimento. Resultados passados não garantem resultados futuros. Os resultados dos alunos variam.</p>
+    <p>© 2026 Gênesis Trading Academy. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<div class="sticky" id="sticky">
+  <div class="pr">Ebook Wolverine <b>R$ 39,90</b></div>
+  <a class="btn sm" href="https://lastlink.com/p/CC77DFE11/" data-buy>Quero o ebook</a>
+</div>
+
+<script>
+// faixa rolando
 (function(){
-  const slides = document.querySelectorAll('.carousel img');
-  const dots = document.querySelectorAll('.dots span');
-  let index = 0;
-  function showSlide(i){
-    slides.forEach((s, idx) => {
-      s.classList.toggle('active', idx === i);
-      dots[idx].classList.toggle('active', idx === i);
-    });
-    index = i;
-  }
-  document.querySelector('.nav-b.left').addEventListener('click', () => {
-    showSlide((index - 1 + slides.length) % slides.length);
-  });
-  document.querySelector('.nav-b.right').addEventListener('click', () => {
-    showSlide((index + 1) % slides.length);
-  });
-  dots.forEach((dot, i) => dot.addEventListener('click', () => showSlide(i)));
-  showSlide(0);
+  var t=['VWAP','DI Ponderado','Wolverine','Mini dólar','Gestão de risco','Regras do operacional','Exemplos de trades'];
+  var h='';for(var k=0;k<4;k++)t.forEach(function(x){h+='<span>'+x+'</span>'});
+  document.getElementById('mq').innerHTML=h;
 })();
 
+// revelar ao rolar
+(function(){
+  var els=document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
+  els.forEach(function(e){io.observe(e)});
+  // gráfico do hero começa logo
+  setTimeout(function(){document.getElementById('chart').classList.add('in')},150);
+})();
+
+// galeria
+(function(){
+  var s=document.querySelectorAll('#slides img'),box=document.getElementById('dots'),i=0,timer;
+  s.forEach(function(_,k){var b=document.createElement('button');b.setAttribute('aria-label','Imagem '+(k+1));b.onclick=function(){go(k,true)};box.appendChild(b)});
+  var ds=box.querySelectorAll('button');
+  function go(n,manual){i=(n+s.length)%s.length;s.forEach(function(x,k){x.classList.toggle('on',k===i)});ds.forEach(function(x,k){x.classList.toggle('on',k===i)});if(manual)restart()}
+  function restart(){clearInterval(timer);timer=setInterval(function(){go(i+1)},4500)}
+  document.getElementById('prev').onclick=function(){go(i-1,true)};
+  document.getElementById('next').onclick=function(){go(i+1,true)};
+  var x0=null,sc=document.getElementById('slides');
+  sc.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  sc.addEventListener('touchend',function(e){if(x0===null)return;var d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>40)go(i+(d<0?1:-1),true);x0=null});
+  go(0);restart();
+})();
+
+// barra fixa no celular depois do hero
+(function(){
+  var st=document.getElementById('sticky'),of=document.getElementById('oferta');
+  function chk(){var y=window.scrollY,r=of.getBoundingClientRect();st.classList.toggle('on',y>520&&!(r.top<window.innerHeight&&r.bottom>0))}
+  window.addEventListener('scroll',chk,{passive:true});chk();
+})();
+
+// pixel: clique no botão de compra
+document.querySelectorAll('[data-buy]').forEach(function(a){
+  a.addEventListener('click',function(){try{fbq('track','InitiateCheckout',{content_name:'Ebook Wolverine',currency:'BRL',value:39.90})}catch(e){}});
+});
 </script>
 </body>
 </html>
